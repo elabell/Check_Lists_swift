@@ -23,6 +23,11 @@ class ChecklistViewController: UITableViewController {
      .AppendPathComponent
      return ddddd
      }
+     
+     
+     static var documentDirectory : URL{
+     return FilManager.default. mm(for...)
+     }
  */
 
     
@@ -72,17 +77,22 @@ class ChecklistViewController: UITableViewController {
       */
         if editingStyle == .delete {
             print("Deleted")
-        }
+          
         
+            if(tableItems.count >= indexPath.row + 1){
+                tableItems.remove(at: indexPath.row)
+            }
+          tableView.reloadData()
+        }
    //     var indx = indexPath.row
-        tableItems.remove(at: indexPath.row)
+    //    tableItems.remove(at: indexPath.row)
   //      nbItems = tableItems.count // very important when in  tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)  we have this var
         
        // tableView.beginUpdates()
    //  tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
         
         
-        tableView.reloadData()
+      
       //  nbItems = tableItems.count
         // tableView.endUpdates()  // very important
         
