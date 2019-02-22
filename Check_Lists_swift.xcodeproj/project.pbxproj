@@ -101,11 +101,11 @@
 		08541B58221E96E700786A1B /* Check_Lists_swift */ = {
 			isa = PBXGroup;
 			children = (
+				08541BD6221FEBD400786A1B /* Supporting files */,
 				08541B89221EA76000786A1B /* Controllers */,
 				08541B88221EA75200786A1B /* Views */,
 				08541B87221EA74000786A1B /* Models */,
 				08541B59221E96E700786A1B /* AppDelegate.swift */,
-				08541B60221E96E700786A1B /* Assets.xcassets */,
 				08541B62221E96E700786A1B /* LaunchScreen.storyboard */,
 				08541B65221E96E700786A1B /* Info.plist */,
 			);
@@ -153,6 +153,14 @@
 				08541B90221EF9C500786A1B /* AddItemViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		08541BD6221FEBD400786A1B /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				08541B60221E96E700786A1B /* Assets.xcassets */,
+			);
+			path = "Supporting files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -465,12 +473,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T4CLTWL9DU;
 				INFOPLIST_FILE = Check_Lists_swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fr.lp.iem.Check-Lists-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = EB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -482,12 +491,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T4CLTWL9DU;
 				INFOPLIST_FILE = Check_Lists_swift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fr.lp.iem.Check-Lists-swift";
+				PRODUCT_BUNDLE_IDENTIFIER = EB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
