@@ -8,9 +8,15 @@
 
 import UIKit
 
-class AddItemViewController: UITableViewController {
+class AddItemViewController: UITableViewController, UITextFieldDelegate {
 
+   // @IBOutlet weak var btnDone: UIBarButtonItem!
     
+    var delegate : AddItemViewControllerDelegate? = nil
+ //   addItem
+    
+    
+    @IBOutlet weak var btnDone: UIBarButtonItem!
     @IBAction func Cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -19,8 +25,14 @@ class AddItemViewController: UITableViewController {
     @IBAction func Done(_ sender: Any) {
         
         print(textEdit.text!)
+        let newItem: ChecklistItem = ChecklistItem.init(_text: textEdit.text!)
         
-      dismiss(animated: true, completion: nil)
+       
+        
+    // dismiss(animated: true, completion: nil)
+       delegate?.addItemViewControllerExe( self, didFinishAddingItem: newItem)
+       // dismiss(animated: true, completion: nil)
+      delegate = nil
         
     }
     
@@ -28,8 +40,14 @@ class AddItemViewController: UITableViewController {
     @IBOutlet weak var textEdit: UITextField!
     
 
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         
+        textEdit.becomeFirstResponder()
+        if  ((textEdit.text?.isEmpty)!) {
+             btnDone.isEnabled = false
+        }
     }
 
     override func viewDidLoad() {
@@ -41,8 +59,36 @@ class AddItemViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func textField(_ _textField: UITextField, shouldChangeCharactersIn range:NSRange, replacementString string: String)-> Bool{
 
+        let text = (_textField.text! as NSString).replacingCharacters(in: range, with: string)
+    
+        if text.isEmpty{
+           btnDone.isEnabled = false
+            
+        }else{
+             btnDone.isEnabled = true
+        }
+        
+        return true
+     /*  guard  let nsString = _textField.text as NSString? else {return false}
+        
+        //let newStrng = nsString.replacingCharacters(in: range, with: string)
+        let newStrng = (nsString as NSString).replacingCharacters(in: range, with: string)
+        return true
+    */
+       // if let swRange = _textField.text.
  }
+}
+
+protocol AddItemViewControllerDelegate : class {
+    func addItemViewControllerDidCancel(_ controller: AddItemViewController)
+    func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem)
+}
+
+
+
 /*
     // MARK: - Table view data source
 

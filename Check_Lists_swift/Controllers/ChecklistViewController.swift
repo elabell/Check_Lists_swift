@@ -8,7 +8,77 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController {
+class ChecklistViewController: UITableViewController,AddItemViewControllerDelegate,SegueHandlerType {
+   // typealias SegueIdentifier = <#type#>
+    
+    enum SegueIdentifier: String {
+        case addItem
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+        
+        switch segueIdentifierForSegue(for: segue) {
+        case .addItem:
+          
+           
+            guard  let destViewControler  = segue.destination as? UINavigationController
+            else {return }
+         
+            guard  let targetcontroller   = destViewControler.topViewController as? AddItemViewController
+            else {return }
+         
+            targetcontroller.delegate = self
+            
+            break
+           // log((segue.destination)
+             
+          /*  guard let addItemViewController = segue.destination as?
+            AddItemViewController
+                else {return }
+ */
+      // addItemViewController.delegate = self
+         
+          
+            
+            
+        }
+        
+        
+       /* guard let addItemViewController = segue.destination as? AddItemViewController
+                   else {return }
+        addItemViewController.delegate = self
+        */
+        
+       // segue.destination.delegate = self
+        
+        
+      /*  switch segueIdentifierForSegue(for: segue) {
+        case .pickColor:
+            
+            guard let colorPickerViewController = segue.destination as? ColorPickerViewController
+                else {return }
+            colorPickerViewController.delegate = self
+            
+            break
+        */
+            
+        }
+    
+    func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+        // TOTEST
+        
+    }
+    
+    func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem) {
+    //TOTEST
+        
+         self.addItem(controller, item: item)
+         self.dismiss(animated: true, completion: nil)
+        
+    }
+    
 
     
     var nbItems: Int {
@@ -42,22 +112,29 @@ class ChecklistViewController: UITableViewController {
     
 
     
-    @IBAction func addItem(_ sender: Any) {
+    //@IBAction
+    func addItem(_ sender: Any, item: ChecklistItem) {
     
         /*
          Cette méthode permettra d’ajouter un item à la liste et préviendra la table view de l’arrivée d’une nouvelle ligne en utilisant la méthode insertRows(at:with:) de table view */
-     
+     //   let cellId : String = "cellId"
         
-       let item = ChecklistItem(_text:"Comunication homework")
+   //    let item = ChecklistItem(_text:"Comunication homework")
         tableItems.append(item)
+
         //nbItems = tableItems.count //  important
        
+     //  tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+     
+       //  tableView.register(ChecklistItemCell.self, forCellReuseIdentifier: cellId)
+            
+    
         tableView.beginUpdates()
         let indx = IndexPath(row: (tableItems.count - 1), section: 0)
         
         
         tableView.insertRows(at: [indx], with: UITableView.RowAnimation.middle)
-         tableView.endUpdates()
+        tableView.endUpdates()
     }
     
   
@@ -107,9 +184,13 @@ class ChecklistViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // pour recycler ou créer une nouvelle cellule selon le modèle défini dans le storyboard
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath) as! ChecklistItemCell  //ici on cast to perso ItemCell and we can access to his propriety
+        
+        
       
         cell.textLabel?.text = "My Item"
+        cell.LabelItem.isHidden = true
+        cell.CheckLabel.isHidden = true
         
         let item = tableItems[indexPath.row]
         //let label = cell.viewWithTag(1000) as! UILabel
@@ -166,6 +247,7 @@ class ChecklistViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+ 
     
     func initTablewithItems(){
         let task1 = ChecklistItem(_text: "Finir le cours d'IOS")
