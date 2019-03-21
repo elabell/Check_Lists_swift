@@ -9,10 +9,28 @@
 import UIKit
 
 class ChecklistViewController: UITableViewController,AddItemViewControllerDelegate,SegueHandlerType {
-   // typealias SegueIdentifier = <#type#>
+   
+    
+    var stateEdit: Bool = false
+    
+    var tableItems = [ChecklistItem]()
+    
+    var editedItemIndex: IndexPath? = nil
+    
+    var nbItems: Int {
+        return tableItems.count
+    }
+    
+
+    
+    
+    @IBOutlet weak var NavigationBar: UINavigationItem!
+    
+    
     
     enum SegueIdentifier: String {
         case addItem
+        case editItem
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -30,87 +48,102 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
             else {return }
          
             targetcontroller.delegate = self
+            targetcontroller.stateEdit = false
+            self.stateEdit = false
+            break
+            
+        case .editItem:
+            
+           // var destSegue = segue.destination
+           
+            guard  let destViewControler  = segue.destination as? UINavigationController
+                else {return }
+ 
+            
+           // segue.setValue(stateEdit , forKey:"stateEdit" )  //TOTEST  this //.accessibilityValue
+            guard  let targetcontroller   = destViewControler.topViewController  as? AddItemViewController
+                else {return }
+            
+           /* guard  let targetcontroller   = segue.destination as? AddItemViewController
+                else {return }
+            */
+            targetcontroller.delegate = self
+            
+          //  if  let item = sender as? ChecklistItem?{
+            let   indxPath_Current : IndexPath = tableView.indexPath(for: sender as! UITableViewCell)!
+            
+            targetcontroller.current_idxItem = indxPath_Current
+        
+            self.editedItemIndex = indxPath_Current
+            
+            targetcontroller.stateEdit = true
+            self.stateEdit = true
+            
+            if  let item = sender as? ChecklistItemCell?{
+            
+                targetcontroller.itemToEditWith = item //tableView.indexPath(for: sender)
+                              // On passe la donnée via les propriétés
+           }
             
             break
-           // log((segue.destination)
-             
-          /*  guard let addItemViewController = segue.destination as?
-            AddItemViewController
-                else {return }
- */
-      // addItemViewController.delegate = self
-         
+           
+            // [indexPath.row]
+        //  we can make edition in meme view
           
             
-            
         }
         
-        
-       /* guard let addItemViewController = segue.destination as? AddItemViewController
-                   else {return }
-        addItemViewController.delegate = self
-        */
-        
-       // segue.destination.delegate = self
-        
-        
-      /*  switch segueIdentifierForSegue(for: segue) {
-        case .pickColor:
-            
-            guard let colorPickerViewController = segue.destination as? ColorPickerViewController
-                else {return }
-            colorPickerViewController.delegate = self
-            
-            break
-        */
-            
+
         }
     
+    func addItemViewControllerEdit(_ controller: AddItemViewController, didFinishEditingItem item: ChecklistItem) {
+        
+        self.editItem(editedItem: item)
+        self.stateEdit = false
+          self.dismiss(animated: true, completion: nil)
+        
+        
+    }
     func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
         // TOTEST
         
     }
     
     func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem) {
-    //TOTEST
+  
         
          self.addItem(controller, item: item)
          self.dismiss(animated: true, completion: nil)
         
     }
     
-
-    
-    var nbItems: Int {
-        return tableItems.count
-    }
-    var tableItems =  [ChecklistItem]()
-    
-
-    /*
- variable de classe
-     static var xxxx : URL{
-     .AppendPathComponent
-     return ddddd
-     }
-     
-     
-     static var documentDirectory : URL{
-     return FilManager.default. mm(for...)
-     }
- */
-
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableItems = [ChecklistItem]()
         initTablewithItems()
-       
+        self.configureTitreOfNavigationWind( withItem: NavigationBar, text: "Checklist")
         
     }
 
     
 
+    func editItem(editedItem: ChecklistItem){
+        
+        var index: IndexPath =  self.editedItemIndex!
+        
+       /* let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: index)  as! ChecklistItemCell
+        cell.textLabel?.text = item.text
+        cell.CheckLabel?.isEnabled = item.checked
+        */
+        
+   var itemToEdit : ChecklistItem = tableItems[index.row]
+        itemToEdit.text = editedItem.text
+        itemToEdit.checked = editedItem.checked
+        
+        tableView.reloadData()
+    }
     
     //@IBAction
     func addItem(_ sender: Any, item: ChecklistItem) {
@@ -142,16 +175,6 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-       //
-     /*
-      tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
-    
-         tableView.beginUpdates()
-         tableItems.remove(at: indexPath.row)
-         nbItems = tableItems.count // very important
-           tableView.endUpdates()
- 
-      */
         if editingStyle == .delete {
             print("Deleted")
           
@@ -161,17 +184,7 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
             }
           tableView.reloadData()
         }
-   //     var indx = indexPath.row
-    //    tableItems.remove(at: indexPath.row)
-  //      nbItems = tableItems.count // very important when in  tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)  we have this var
-        
-       // tableView.beginUpdates()
-   //  tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
-        
-        
-      
-      //  nbItems = tableItems.count
-        // tableView.endUpdates()  // very important
+  
         
         
     }
@@ -187,19 +200,18 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath) as! ChecklistItemCell  //ici on cast to perso ItemCell and we can access to his propriety
         
         
-      
-        cell.textLabel?.text = "My Item"
-        cell.LabelItem.isHidden = true
-        cell.CheckLabel.isHidden = true
         
+        cell.textLabel?.text = "My Item"
+       // cell.LabelItem.isHidden = true
+       // cell.CheckLabel.isHidden = true
+        
+        cell.isInVissible()
         let item = tableItems[indexPath.row]
         //let label = cell.viewWithTag(1000) as! UILabel
         //label.text = item.text
         configureText(for: cell, withItem: item)
         configureCheckmark(for: cell, withItem: item)
         tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.bottom)
-        
-        
         
         
         return cell
@@ -226,7 +238,7 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
             cell.accessoryType = .checkmark
           }
         else{
-            cell.accessoryType = .none
+            cell.accessoryType = .detailDisclosureButton
         }
         
         
@@ -263,8 +275,11 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
         
     }
     
+    func configureTitreOfNavigationWind( withItem: UINavigationItem, text: String){
+                withItem.title = text
+    }
     
-
+    
     
 
 }

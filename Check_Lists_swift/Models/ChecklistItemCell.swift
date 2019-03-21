@@ -30,6 +30,19 @@ class ChecklistItemCell: UITableViewCell {
     }
   */
  
+    func isVissible(){
+        
+      LabelItem.isHidden = false
+      CheckLabel.isHidden = false
+        
+    }
+    
+    func isInVissible(){
+        
+        LabelItem.isHidden = true
+        CheckLabel.isHidden = true
+        
+    }
   
     override func awakeFromNib() {
         super.awakeFromNib()

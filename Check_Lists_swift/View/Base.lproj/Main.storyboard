@@ -59,7 +59,7 @@
                                 <connections>
                                     <outlet property="CheckLabel" destination="4Wg-ug-04Z" id="Eul-1i-RCy"/>
                                     <outlet property="LabelItem" destination="eLl-ww-dzd" id="BoT-4T-zfR"/>
-                                    <segue destination="GDM-gA-ii6" kind="presentation" identifier="editItem" trigger="accessoryAction" id="e3k-y6-2Bn"/>
+                                    <segue destination="9qm-Bi-xU7" kind="presentation" identifier="editItem" trigger="accessoryAction" id="6PN-yf-tIb"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -75,6 +75,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="NavigationBar" destination="Bn5-Ub-3VP" id="HmM-lE-VqL"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PSV-1H-U4g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -104,8 +107,6 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes" keyboardAppearance="light" returnKeyType="done" enablesReturnKeyAutomatically="YES" smartInsertDeleteType="yes"/>
                                                     <connections>
-                                                        <action selector="Done:" destination="GDM-gA-ii6" eventType="editingDidEndOnExit" id="You-BN-uZL"/>
-                                                        <action selector="Done:" destination="GDM-gA-ii6" eventType="editingDidEnd" id="bOr-sI-If5"/>
                                                         <outlet property="delegate" destination="GDM-gA-ii6" id="awc-Ek-uh0"/>
                                                     </connections>
                                                 </textField>
@@ -139,6 +140,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="NavigationBarAddItem" destination="Nda-dS-GYb" id="se9-mi-Qx8"/>
                         <outlet property="btnDone" destination="TzB-7w-OfI" id="oFq-Aw-x4U"/>
                         <outlet property="textEdit" destination="NH6-DO-zKb" id="sWo-Ze-RqI"/>
                     </connections>
@@ -185,6 +187,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qMT-Q6-spD"/>
+        <segue reference="6PN-yf-tIb"/>
     </inferredMetricsTieBreakers>
 </document>

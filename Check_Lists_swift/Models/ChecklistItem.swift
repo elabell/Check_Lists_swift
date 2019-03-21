@@ -10,6 +10,9 @@ import Foundation
 
 class ChecklistItem {
     
+    
+    var  stateEdition: Bool = false
+
     var  text: String = ""
     var  checked: Bool = false
     
@@ -25,6 +28,11 @@ class ChecklistItem {
         self.text = _text
         self.checked = _checked
     }
+    
+   /* func modifItem(_text: String ){
+        self.text = _text
+    }
+    */
     
     func toggleChecked(){
        /* if (self.checked){

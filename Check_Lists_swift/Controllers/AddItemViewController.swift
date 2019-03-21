@@ -13,12 +13,23 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
    // @IBOutlet weak var btnDone: UIBarButtonItem!
     
     var delegate : AddItemViewControllerDelegate? = nil
- //   addItem
+
+    //   addItem
+   // car on va modifier cettt item etpas surcouche
+    var itemToEdit : ChecklistItem? = nil
+    var itemToEditWith : ChecklistItemCell? = nil
+    var current_idxItem : IndexPath? = nil
     
+     var stateEdit: Bool = false
+    
+    
+    
+    @IBOutlet weak var NavigationBarAddItem: UINavigationItem!
     
     @IBOutlet weak var btnDone: UIBarButtonItem!
     @IBAction func Cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+        delegate = nil
     }
     
     
@@ -27,12 +38,20 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         print(textEdit.text!)
         let newItem: ChecklistItem = ChecklistItem.init(_text: textEdit.text!)
         
-       
+        if (stateEdit){
+            // dismiss(animated: true, completion: nil)
+            delegate?.addItemViewControllerEdit(self,didFinishEditingItem: newItem)
+            // dismiss(animated: true, completion: nil)
+            delegate = nil
+            
+        } else {
+            
+            // dismiss(animated: true, completion: nil)
+            delegate?.addItemViewControllerExe( self, didFinishAddingItem: newItem)
+            // dismiss(animated: true, completion: nil)
+            delegate = nil
+        }
         
-    // dismiss(animated: true, completion: nil)
-       delegate?.addItemViewControllerExe( self, didFinishAddingItem: newItem)
-       // dismiss(animated: true, completion: nil)
-      delegate = nil
         
     }
     
@@ -48,16 +67,18 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         if  ((textEdit.text?.isEmpty)!) {
              btnDone.isEnabled = false
         }
+        if (stateEdit) {
+            NavigationBarAddItem.title = "Edit item"
+        }else{
+            NavigationBarAddItem.title = "Add item"
+        }
+        
     }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+      super.viewDidLoad()
+        
+   
     }
     
     func textField(_ _textField: UITextField, shouldChangeCharactersIn range:NSRange, replacementString string: String)-> Bool{
@@ -65,96 +86,29 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         let text = (_textField.text! as NSString).replacingCharacters(in: range, with: string)
     
         if text.isEmpty{
-           btnDone.isEnabled = false
+            btnDone.isEnabled = false
             
         }else{
              btnDone.isEnabled = true
         }
         
         return true
-     /*  guard  let nsString = _textField.text as NSString? else {return false}
-        
-        //let newStrng = nsString.replacingCharacters(in: range, with: string)
-        let newStrng = (nsString as NSString).replacingCharacters(in: range, with: string)
-        return true
-    */
-       // if let swRange = _textField.text.
+    
  }
 }
 
 protocol AddItemViewControllerDelegate : class {
     func addItemViewControllerDidCancel(_ controller: AddItemViewController)
     func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem)
+    
+    func addItemViewControllerEdit(_ controller: AddItemViewController, didFinishEditingItem item: ChecklistItem)
 }
 
 
 
-/*
-    // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
- }*/
+protocol EditItemViewControllerDelegate : class {
+    
+    func editItemViewController(_ controller: AddItemViewController, itemToEdit:ChecklistItem ,itemToEditWith : ChecklistItemCell )
+}
