@@ -86,7 +86,7 @@
         <!--Add Item-->
         <scene sceneID="dIL-Vg-Og5">
             <objects>
-                <tableViewController id="GDM-gA-ii6" customClass="AddItemViewController" customModule="Check_Lists_swift" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="GDM-gA-ii6" customClass="ItemDetailViewController" customModule="Check_Lists_swift" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="TzH-BT-GbZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

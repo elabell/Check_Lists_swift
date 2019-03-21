@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController,AddItemViewControllerDelegate,SegueHandlerType {
-   
+class ChecklistViewController: UITableViewController,ItemDetailViewControllerDelegate,SegueHandlerType {
+
     
     var stateEdit: Bool = false
     
@@ -44,7 +44,7 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
             guard  let destViewControler  = segue.destination as? UINavigationController
             else {return }
          
-            guard  let targetcontroller   = destViewControler.topViewController as? AddItemViewController
+            guard  let targetcontroller   = destViewControler.topViewController as? ItemDetailViewController
             else {return }
          
             targetcontroller.delegate = self
@@ -61,10 +61,10 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
  
             
            // segue.setValue(stateEdit , forKey:"stateEdit" )  //TOTEST  this //.accessibilityValue
-            guard  let targetcontroller   = destViewControler.topViewController  as? AddItemViewController
+            guard  let targetcontroller   = destViewControler.topViewController  as? ItemDetailViewController
                 else {return }
             
-           /* guard  let targetcontroller   = segue.destination as? AddItemViewController
+           /* guard  let targetcontroller   = segue.destination as? ItemDetailViewController
                 else {return }
             */
             targetcontroller.delegate = self
@@ -96,7 +96,9 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
 
         }
     
-    func addItemViewControllerEdit(_ controller: AddItemViewController, didFinishEditingItem item: ChecklistItem) {
+    
+    
+    func itemDetailViewControllerEdit(_ controller: ItemDetailViewController, didFinishEditingItem item: ChecklistItem) {
         
         self.editItem(editedItem: item)
         self.stateEdit = false
@@ -104,12 +106,12 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
         
         
     }
-    func addItemViewControllerDidCancel(_ controller: AddItemViewController) {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
         // TOTEST
         
     }
     
-    func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem) {
+    func itemDetailViewControllerExe(_ controller: ItemDetailViewController, didFinishAddingItem item: ChecklistItem) {
   
         
          self.addItem(controller, item: item)

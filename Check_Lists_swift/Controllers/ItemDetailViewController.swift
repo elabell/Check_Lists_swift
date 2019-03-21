@@ -1,5 +1,5 @@
 //
-//  AddItemViewController.swift
+//  ItemDetailViewController.swift
 //  Check_Lists_swift
 //
 //  Created by lpiem on 21/02/2019.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class AddItemViewController: UITableViewController, UITextFieldDelegate {
+class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
 
    // @IBOutlet weak var btnDone: UIBarButtonItem!
     
-    var delegate : AddItemViewControllerDelegate? = nil
+    var delegate : ItemDetailViewControllerDelegate? = nil
 
     //   addItem
    // car on va modifier cettt item etpas surcouche
@@ -40,14 +40,14 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         
         if (stateEdit){
             // dismiss(animated: true, completion: nil)
-            delegate?.addItemViewControllerEdit(self,didFinishEditingItem: newItem)
+            delegate?.itemDetailViewControllerEdit(self,didFinishEditingItem: newItem)
             // dismiss(animated: true, completion: nil)
             delegate = nil
             
         } else {
             
             // dismiss(animated: true, completion: nil)
-            delegate?.addItemViewControllerExe( self, didFinishAddingItem: newItem)
+            delegate?.itemDetailViewControllerExe( self, didFinishAddingItem: newItem)
             // dismiss(animated: true, completion: nil)
             delegate = nil
         }
@@ -97,11 +97,11 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
  }
 }
 
-protocol AddItemViewControllerDelegate : class {
-    func addItemViewControllerDidCancel(_ controller: AddItemViewController)
-    func addItemViewControllerExe(_ controller: AddItemViewController, didFinishAddingItem item: ChecklistItem)
+protocol ItemDetailViewControllerDelegate : class {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
+    func itemDetailViewControllerExe(_ controller: ItemDetailViewController, didFinishAddingItem item: ChecklistItem)
     
-    func addItemViewControllerEdit(_ controller: AddItemViewController, didFinishEditingItem item: ChecklistItem)
+    func itemDetailViewControllerEdit(_ controller: ItemDetailViewController, didFinishEditingItem item: ChecklistItem)
 }
 
 
@@ -110,5 +110,5 @@ protocol AddItemViewControllerDelegate : class {
 
 protocol EditItemViewControllerDelegate : class {
     
-    func editItemViewController(_ controller: AddItemViewController, itemToEdit:ChecklistItem ,itemToEditWith : ChecklistItemCell )
+    func editItemViewController(_ controller: ItemDetailViewController, itemToEdit:ChecklistItem ,itemToEditWith : ChecklistItemCell )
 }
