@@ -131,14 +131,11 @@ class ChecklistViewController: UITableViewController,AddItemViewControllerDelega
 
     func editItem(editedItem: ChecklistItem){
         
-        var index: IndexPath =  self.editedItemIndex!
-        
-       /* let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: index)  as! ChecklistItemCell
-        cell.textLabel?.text = item.text
-        cell.CheckLabel?.isEnabled = item.checked
-        */
-        
-   var itemToEdit : ChecklistItem = tableItems[index.row]
+    var index: IndexPath =  self.editedItemIndex!
+    
+        //TODO totest DW
+        //var   itemindex =  tableItems.index(where:{ $0 === editedItem})
+    var itemToEdit : ChecklistItem = tableItems[index.row]
         itemToEdit.text = editedItem.text
         itemToEdit.checked = editedItem.checked
         
