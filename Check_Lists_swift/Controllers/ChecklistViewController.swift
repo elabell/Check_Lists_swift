@@ -9,7 +9,7 @@
 import UIKit
 
 class ChecklistViewController: UITableViewController,ItemDetailViewControllerDelegate,SegueHandlerType {
-
+    
     
     var stateEdit: Bool = false
     
@@ -21,7 +21,7 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         return tableItems.count
     }
     
-
+    
     
     
     @IBOutlet weak var NavigationBar: UINavigationItem!
@@ -39,14 +39,14 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         
         switch segueIdentifierForSegue(for: segue) {
         case .addItem:
-          
-           
+            
+            
             guard  let destViewControler  = segue.destination as? UINavigationController
-            else {return }
-         
+                else {return }
+            
             guard  let targetcontroller   = destViewControler.topViewController as? ItemDetailViewController
-            else {return }
-         
+                else {return }
+            
             targetcontroller.delegate = self
             targetcontroller.stateEdit = false
             self.stateEdit = false
@@ -54,47 +54,47 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
             
         case .editItem:
             
-           // var destSegue = segue.destination
-           
+            // var destSegue = segue.destination
+            
             guard  let destViewControler  = segue.destination as? UINavigationController
                 else {return }
- 
             
-           // segue.setValue(stateEdit , forKey:"stateEdit" )  //TOTEST  this //.accessibilityValue
+            
+            // segue.setValue(stateEdit , forKey:"stateEdit" )  //TOTEST  this //.accessibilityValue
             guard  let targetcontroller   = destViewControler.topViewController  as? ItemDetailViewController
                 else {return }
             
-           /* guard  let targetcontroller   = segue.destination as? ItemDetailViewController
-                else {return }
-            */
+            /* guard  let targetcontroller   = segue.destination as? ItemDetailViewController
+             else {return }
+             */
             targetcontroller.delegate = self
             
-          //  if  let item = sender as? ChecklistItem?{
+            //  if  let item = sender as? ChecklistItem?{
             let   indxPath_Current : IndexPath = tableView.indexPath(for: sender as! UITableViewCell)!
             
             targetcontroller.current_idxItem = indxPath_Current
-        
+            
             self.editedItemIndex = indxPath_Current
             
             targetcontroller.stateEdit = true
             self.stateEdit = true
             
             if  let item = sender as? ChecklistItemCell?{
-            
+                
                 targetcontroller.itemToEditWith = item //tableView.indexPath(for: sender)
-                              // On passe la donnée via les propriétés
-           }
+                // On passe la donnée via les propriétés
+            }
             
             break
-           
+            
             // [indexPath.row]
-        //  we can make edition in meme view
-          
+            //  we can make edition in meme view
+            
             
         }
         
-
-        }
+        
+    }
     
     
     
@@ -102,7 +102,7 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         
         self.editItem(editedItem: item)
         self.stateEdit = false
-          self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
         
     }
@@ -112,10 +112,10 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     }
     
     func itemDetailViewControllerExe(_ controller: ItemDetailViewController, didFinishAddingItem item: ChecklistItem) {
-  
         
-         self.addItem(controller, item: item)
-         self.dismiss(animated: true, completion: nil)
+        
+        self.addItem(controller, item: item)
+        self.dismiss(animated: true, completion: nil)
         
     }
     
@@ -128,16 +128,16 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         self.configureTitreOfNavigationWind( withItem: NavigationBar, text: "Checklist")
         
     }
-
     
-
+    
+    
     func editItem(editedItem: ChecklistItem){
         
-    var index: IndexPath =  self.editedItemIndex!
-    
+        var index: IndexPath =  self.editedItemIndex!
+        
         //TODO totest DW
         //var   itemindex =  tableItems.index(where:{ $0 === editedItem})
-    var itemToEdit : ChecklistItem = tableItems[index.row]
+        var itemToEdit : ChecklistItem = tableItems[index.row]
         itemToEdit.text = editedItem.text
         itemToEdit.checked = editedItem.checked
         
@@ -146,21 +146,21 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     
     //@IBAction
     func addItem(_ sender: Any, item: ChecklistItem) {
-    
+        
         /*
          Cette méthode permettra d’ajouter un item à la liste et préviendra la table view de l’arrivée d’une nouvelle ligne en utilisant la méthode insertRows(at:with:) de table view */
-     //   let cellId : String = "cellId"
+        //   let cellId : String = "cellId"
         
-   //    let item = ChecklistItem(_text:"Comunication homework")
+        //    let item = ChecklistItem(_text:"Comunication homework")
         tableItems.append(item)
-
+        
         //nbItems = tableItems.count //  important
-       
-     //  tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
-     
-       //  tableView.register(ChecklistItemCell.self, forCellReuseIdentifier: cellId)
-            
-    
+        
+        //  tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        //  tableView.register(ChecklistItemCell.self, forCellReuseIdentifier: cellId)
+        
+        
         tableView.beginUpdates()
         let indx = IndexPath(row: (tableItems.count - 1), section: 0)
         
@@ -169,26 +169,28 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         tableView.endUpdates()
     }
     
-  
+    
     
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
             print("Deleted")
-          
-        
-            if(tableItems.count >= indexPath.row + 1){
-                tableItems.remove(at: indexPath.row)
-            }
-          tableView.reloadData()
+            
+            
+            //  if(tableItems.count >= indexPath.row + 1){
+            tableItems.remove(at: indexPath.row)
+            //  }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            // tableView.reloadData()
         }
-  
+        
         
         
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("countItems",tableItems.count)
         return  tableItems.count// => is better to count each time  bc if we forget update this variable
         
     }
@@ -201,8 +203,8 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         
         
         cell.textLabel?.text = "My Item"
-       // cell.LabelItem.isHidden = true
-       // cell.CheckLabel.isHidden = true
+        // cell.LabelItem.isHidden = true
+        // cell.CheckLabel.isHidden = true
         
         cell.isInVissible()
         let item = tableItems[indexPath.row]
@@ -210,7 +212,8 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         //label.text = item.text
         configureText(for: cell, withItem: item)
         configureCheckmark(for: cell, withItem: item)
-        tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.bottom)
+   
+        //    tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.bottom)
         
         
         return cell
@@ -218,15 +221,17 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if let cell = tableView.cellForRow(at: indexPath){
+//        if let cell = tableView.cellForRow(at: indexPath){
+        
+            print("indxPAth: ",indexPath)
             let item = tableItems[indexPath.row]
             item.toggleChecked()
-            configureText(for: cell, withItem: item)
-            configureCheckmark(for: cell, withItem: item)
-           // tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.none)
-            tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.left)
-            
-        }
+//            configureText(for: cell, withItem: item)
+//            configureCheckmark(for: cell, withItem: item)
+            // tableView.reloadRows(at: [indexPath], with:  UITableView.RowAnimation.none)
+            tableView.reloadRows(at: [indexPath], with:  .automatic)
+        
+//        }
         tableView.deselectRow(at: (indexPath), animated: true)
     }
     
@@ -235,7 +240,7 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     func configureCheckmark(for cell: UITableViewCell, withItem item: ChecklistItem){
         if(item.checked){
             cell.accessoryType = .checkmark
-          }
+        }
         else{
             cell.accessoryType = .detailDisclosureButton
         }
@@ -247,18 +252,18 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
     
     func configureText(for cell: UITableViewCell, withItem item: ChecklistItem){
         
-      //  let label = cell.viewWithTag(1000) as! UILabel
-      //  label.text = item.text
+        //  let label = cell.viewWithTag(1000) as! UILabel
+        //  label.text = item.text
         
         cell.textLabel?.text = item.text
-
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
- 
+    
     
     func initTablewithItems(){
         let task1 = ChecklistItem(_text: "Finir le cours d'IOS")
@@ -270,16 +275,16 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         tableItems.append(task3)
         tableItems.append(task4)
         
-       // nbItems = tableItems.count
+        // nbItems = tableItems.count
         
     }
     
     func configureTitreOfNavigationWind( withItem: UINavigationItem, text: String){
-                withItem.title = text
+        withItem.title = text
     }
     
     
     
-
+    
 }
 
