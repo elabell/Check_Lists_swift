@@ -11,6 +11,9 @@ import UIKit
 class ChecklistViewController: UITableViewController,ItemDetailViewControllerDelegate,SegueHandlerType {
     
     
+    var documentDirectory : URL? = nil
+    var dataFileUrl : URL? = nil
+
     var stateEdit: Bool = false
     
     var tableItems = [ChecklistItem]()
@@ -178,11 +181,15 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
             print("Deleted")
             
             
-            //  if(tableItems.count >= indexPath.row + 1){
-            tableItems.remove(at: indexPath.row)
-            //  }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            // tableView.reloadData()
+
+            
+            if indexPath.row  < tableItems.count {
+             //if(tableItems.count >= indexPath.row + 1){
+                tableItems.remove(at: indexPath.row)
+              
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+                // tableView.reloadData()
         }
         
         
@@ -279,12 +286,70 @@ class ChecklistViewController: UITableViewController,ItemDetailViewControllerDel
         
     }
     
+   //documentDirectory  persistencePath()
+    private  func persistencePath() -> URL?{
+        
+        let url = try? FileManager.default.url(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true)
+        
+        return url?.appendingPathComponent("checklistitems.bin")
+    }
+    
+    
+   override required init?(coder aDecoder: NSCoder) {
+     super.init(coder: aDecoder)
+     try! loadChecklistItems()
+   
+    }
+
+    override func awakeFromNib() {
+        
+    }
+    
     func configureTitreOfNavigationWind( withItem: UINavigationItem, text: String){
         withItem.title = text
     }
     
+    func saveChecklistItems() throws{
+        
+        if let url = self.persistencePath(), let array = self as? NSArray{
+       
+        
+            
+            let data = try NSKeyedArchiver.archivedData(withRootObject: array, requiringSecureCoding: false)
+            try data.write(to: url)
+        }
+        else {
+            let displaymsg: [String: Any] = ["Error occurred": 10]
+                
+            throw NSError(domain: "com.exemple.MyCheckList", code: 10, userInfo: displaymsg)
+        }
+    }
     
+    func loadChecklistItems()  throws -> [ChecklistItem]{
+        
+        //var decoder: JSONDecoder?  = nil
+        if let url = self.persistencePath() , let data = (try? Data(contentsOf: url) as Data?){
+        
+            if let array = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSArray.self, ChecklistItem.self], from: (data as? Data)!) as? [ChecklistItem] {
+               
+                return array!
+               }
+            else {
+                    
+                     throw NSError(domain: "com.example.MyToDo", code: 11, userInfo: nil)
+                    
+                }
     
+      }
+        else{
+            throw NSError(domain: "com.example.MyToDo", code: 11, userInfo: nil)
+        }
+    }
     
-}
 
+
+}
